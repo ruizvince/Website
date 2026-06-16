@@ -38,7 +38,29 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.setAttribute("data-theme", targetTheme);
         localStorage.setItem("theme", targetTheme);
     });
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    
+    // 1. Check for saved theme preference, otherwise check system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.body.classList.add('dark-theme');
+    }
 
+    // 2. Listen for clicks on the toggle button
+    themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        
+        // 3. Save the current choice to localStorage
+        if (document.body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    });
+});
     // 4. Reactive Skill Progression Animation Trigger
     const skillBars = document.querySelectorAll(".progress-line span");
     const skillsSection = document.getElementById("skills");
